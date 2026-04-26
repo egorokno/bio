@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>My Cool Site</title>
+
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+    }
+
+   
+    video {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        z-index: -1;
+    }
+
+   
+    #title {
+        position: fixed;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        font-size: 30px;
+        color: white;
+        z-index: 10;
+    }
+
+
+    #startScreen {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: black;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 50px;
+        cursor: pointer;
+        z-index: 20;
+    }
+
+  
+    .icon {
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        cursor: pointer;
+    }
+</style>
+</head>
+
+<body>
+
+<div id="startScreen">ЖМИ! ЖМИ!</div>
+<div id="title">hey hi hello</div>
+
+<video id="bgVideo" loop muted>
+    <source src="video.mp4" type="video/mp4">
+</video>
+
+<audio id="music" loop>
+    <source src="music.mp3" type="audio/mp3">
+</audio>
+
+<script>
+const iconsData = [
+    {src: "icons/telegram.png", link: "https://t.me/popgoth"},
+    {src: "icons/roblox.png", link: "https://roblox.com/users/3887426918/profile"},
+    {src: "icons/github.png", link: "https://github.com/egorokno"},
+    {src: "icons/steam.png", link: "https://steamcommunity.com/id/egorokno/"},
+    {src: "icons/soundcloud.png", link: "https://soundcloud.com/egorokno"},
+    {src: "icons/tumblr.png", link: "https://tumblr.com/blog/weepingfeststranger"}
+];
+
+const icons = [];
+
+function createIcons() {
+    for (let i = 0; i < 15; i++) {
+        const data = iconsData[i % iconsData.length];
+
+        const img = document.createElement("img");
+        img.src = data.src;
+        img.className = "icon";
+
+        img.x = Math.random() * window.innerWidth;
+        img.y = Math.random() * window.innerHeight;
+        img.vx = (Math.random() - 0.5) * 2;
+        img.vy = (Math.random() - 0.5) * 2;
+
+        img.onclick = () => window.open(data.link, "_blank");
+
+        document.body.appendChild(img);
+        icons.push(img);
+    }
+}
+
+function animate() {
+    icons.forEach(icon => {
+        icon.x += icon.vx;
+        icon.y += icon.vy;
+
+        if (icon.x <= 0 || icon.x >= window.innerWidth - 60) icon.vx *= -1;
+        if (icon.y <= 0 || icon.y >= window.innerHeight - 60) icon.vy *= -1;
+
+        icon.style.left = icon.x + "px";
+        icon.style.top = icon.y + "px";
+    });
+
+    requestAnimationFrame(animate);
+}
+
+document.getElementById("startScreen").onclick = () => {
+    document.getElementById("startScreen").style.display = "none";
+
+    document.getElementById("bgVideo").play();
+    document.getElementById("music").play();
+
+    createIcons();
+    animate();
+};
+</script>
+
+</body>
+</html>
