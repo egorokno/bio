@@ -1,41 +1,56 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>hi</title>
 
 <style>
 html, body {
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    background: black;
+    height: 100%;
     font-family: Arial;
 }
 
-/* Видео */
-video {
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover;
-    top: 0;
-    left: 0;
-    z-index: -1;
+
+body {
+    background: url('bg.jpg') no-repeat center center/cover;
 }
 
-/* Заголовок */
+
 #title {
-    position: fixed;
+    position: absolute;
     top: 10px;
     width: 100%;
     text-align: center;
     color: white;
     font-size: 30px;
-    z-index: 10;
 }
 
-/* Старт */
+
+#center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    gap: 25px;
+}
+
+
+.icon {
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.icon:hover {
+    transform: scale(1.2);
+}
+
+
 #startScreen {
     position: fixed;
     width: 100%;
@@ -47,92 +62,59 @@ video {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    z-index: 20;
+    z-index: 10;
 }
 
-/* Иконки */
-.icon {
-    position: absolute;
-    width: 70px;
-    height: 70px;
-    cursor: pointer;
+
+@media (max-width: 768px) {
+
+    #title {
+        font-size: 22px;
+    }
+
+    #center {
+        flex-direction: column; 
+        gap: 15px;
+    }
+
+    .icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    #startScreen {
+        font-size: 40px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div id="startScreen">ЖМИ! ЖМИ!</div>
+<div id="startScreen">жми! жми!</div>
 <div id="title">hey hi hello</div>
 
-<video id="bgVideo" loop muted playsinline>
-    <source src="video.mp4" type="video/mp4">
-</video>
+<div id="center">
+    <img src="icons/telegram.png" class="icon" onclick="openLink('https://t.me/popgoth')">
+    <img src="icons/roblox.png" class="icon" onclick="openLink('https://roblox.com/users/3887426918/profile')">
+    <img src="icons/github.png" class="icon" onclick="openLink('https://github.com/egorokno')">
+    <img src="icons/steam.png" class="icon" onclick="openLink('https://steamcommunity.com/id/egorokno/')">
+    <img src="icons/soundcloud.png" class="icon" onclick="openLink('https://soundcloud.com/egorokno')">
+    <img src="icons/tumblr.png" class="icon" onclick="openLink('https://weepingfeststranger.tumblr.com')">
+</div>
 
 <audio id="music" loop>
     <source src="music.mp3" type="audio/mp3">
 </audio>
 
 <script>
-const iconsData = [
-    {src: "icons/telegram.png", link: "https://t.me/popgoth"},
-    {src: "icons/roblox.png", link: "https://roblox.com/users/3887426918/profile"},
-    {src: "icons/github.png", link: "https://github.com/egorokno},
-    {src: "icons/steam.png", link: "https://steamcommunity.com/id/egorokno/"},
-    {src: "icons/soundcloud.png", link: "https://soundcloud.com/egorokno"},
-    {src: "icons/tumblr.png", link: "https://tumblr.com/blog/weepingfeststranger"}
-];
-
-const icons = [];
-
-function createIcons() {
-    for (let i = 0; i < 20; i++) {
-        const data = iconsData[i % iconsData.length];
-
-        const img = document.createElement("img");
-        img.src = data.src;
-        img.className = "icon";
-
-        img.x = Math.random() * window.innerWidth;
-        img.y = Math.random() * window.innerHeight;
-
-        // ⚡ увеличил скорость
-        img.vx = (Math.random() - 0.5) * 6;
-        img.vy = (Math.random() - 0.5) * 6;
-
-        img.onclick = () => window.open(data.link, "_blank");
-
-        document.body.appendChild(img);
-        icons.push(img);
-    }
-}
-
-function animate() {
-    icons.forEach(icon => {
-        icon.x += icon.vx;
-        icon.y += icon.vy;
-
-        if (icon.x <= 0 || icon.x >= window.innerWidth - 70) icon.vx *= -1;
-        if (icon.y <= 0 || icon.y >= window.innerHeight - 70) icon.vy *= -1;
-
-        icon.style.left = icon.x + "px";
-        icon.style.top = icon.y + "px";
-    });
-
-    requestAnimationFrame(animate);
+function openLink(link) {
+    window.open(link, "_blank");
 }
 
 document.getElementById("startScreen").onclick = () => {
     document.getElementById("startScreen").style.display = "none";
-
-    const video = document.getElementById("bgVideo");
-    const music = document.getElementById("music");
-
-    video.play().catch(e => console.log("video error:", e));
-    music.play().catch(e => console.log("audio error:", e));
-
-    createIcons();
-    animate();
+    document.getElementById("music").play();
 };
 </script>
 
