@@ -2,60 +2,61 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>My Cool Site</title>
+<title>hi</title>
 
 <style>
-    body, html {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        font-family: Arial, sans-serif;
-    }
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: black;
+    font-family: Arial;
+}
 
-   
-    video {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        object-fit: cover;
-        z-index: -1;
-    }
+/* Видео */
+video {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
 
-   
-    #title {
-        position: fixed;
-        top: 10px;
-        width: 100%;
-        text-align: center;
-        font-size: 30px;
-        color: white;
-        z-index: 10;
-    }
+/* Заголовок */
+#title {
+    position: fixed;
+    top: 10px;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-size: 30px;
+    z-index: 10;
+}
 
+/* Старт */
+#startScreen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: black;
+    color: white;
+    font-size: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 20;
+}
 
-    #startScreen {
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        background: black;
-        color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 50px;
-        cursor: pointer;
-        z-index: 20;
-    }
-
-  
-    .icon {
-        position: absolute;
-        width: 60px;
-        height: 60px;
-        cursor: pointer;
-    }
+/* Иконки */
+.icon {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    cursor: pointer;
+}
 </style>
 </head>
 
@@ -64,7 +65,7 @@
 <div id="startScreen">ЖМИ! ЖМИ!</div>
 <div id="title">hey hi hello</div>
 
-<video id="bgVideo" loop muted>
+<video id="bgVideo" loop muted playsinline>
     <source src="video.mp4" type="video/mp4">
 </video>
 
@@ -76,7 +77,7 @@
 const iconsData = [
     {src: "icons/telegram.png", link: "https://t.me/popgoth"},
     {src: "icons/roblox.png", link: "https://roblox.com/users/3887426918/profile"},
-    {src: "icons/github.png", link: "https://github.com/egorokno"},
+    {src: "icons/github.png", link: "https://github.com/egorokno},
     {src: "icons/steam.png", link: "https://steamcommunity.com/id/egorokno/"},
     {src: "icons/soundcloud.png", link: "https://soundcloud.com/egorokno"},
     {src: "icons/tumblr.png", link: "https://tumblr.com/blog/weepingfeststranger"}
@@ -85,7 +86,7 @@ const iconsData = [
 const icons = [];
 
 function createIcons() {
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 20; i++) {
         const data = iconsData[i % iconsData.length];
 
         const img = document.createElement("img");
@@ -94,8 +95,10 @@ function createIcons() {
 
         img.x = Math.random() * window.innerWidth;
         img.y = Math.random() * window.innerHeight;
-        img.vx = (Math.random() - 0.5) * 2;
-        img.vy = (Math.random() - 0.5) * 2;
+
+        // ⚡ увеличил скорость
+        img.vx = (Math.random() - 0.5) * 6;
+        img.vy = (Math.random() - 0.5) * 6;
 
         img.onclick = () => window.open(data.link, "_blank");
 
@@ -109,8 +112,8 @@ function animate() {
         icon.x += icon.vx;
         icon.y += icon.vy;
 
-        if (icon.x <= 0 || icon.x >= window.innerWidth - 60) icon.vx *= -1;
-        if (icon.y <= 0 || icon.y >= window.innerHeight - 60) icon.vy *= -1;
+        if (icon.x <= 0 || icon.x >= window.innerWidth - 70) icon.vx *= -1;
+        if (icon.y <= 0 || icon.y >= window.innerHeight - 70) icon.vy *= -1;
 
         icon.style.left = icon.x + "px";
         icon.style.top = icon.y + "px";
@@ -122,8 +125,11 @@ function animate() {
 document.getElementById("startScreen").onclick = () => {
     document.getElementById("startScreen").style.display = "none";
 
-    document.getElementById("bgVideo").play();
-    document.getElementById("music").play();
+    const video = document.getElementById("bgVideo");
+    const music = document.getElementById("music");
+
+    video.play().catch(e => console.log("video error:", e));
+    music.play().catch(e => console.log("audio error:", e));
 
     createIcons();
     animate();
